@@ -6,6 +6,7 @@ const toggle = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider');
 const fullScreen = player.querySelector('.fullscreen');
+const fullScreenIcon = fullScreen.querySelector('.fullscreen-icon');
 let inFullScreen = false;
 
 function togglePlay() {
@@ -90,6 +91,11 @@ function makeNotFullscreen() {
     return;
 }
 
+function updateFullScreenButton() {
+    const fullScreenIconText = this.webkitIsFullScreen || this.mozIsFullScreen || this.isFullScreen ? 'fullscreen_exit' : 'fullscreen';
+    fullScreenIcon.textContent = fullScreenIconText;
+}
+
 video.addEventListener('click', togglePlay);
 video.addEventListener('play', updateButton);
 video.addEventListener('pause', updateButton);
@@ -109,3 +115,6 @@ progress.addEventListener('mousedown', () => mousedown = true);
 progress.addEventListener('mouseup', () => mousedown = false);
 
 fullScreen.addEventListener('click', toggleFullScreen);
+document.addEventListener('webkitfullscreenchange', updateFullScreenButton);
+document.addEventListener('mozfullscreenchange', updateFullScreenButton);
+document.addEventListener('fullscreenchange', updateFullScreenButton);
