@@ -6,6 +6,7 @@ const toggle = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider');
 const fullScreen = player.querySelector('.fullscreen');
+let inFullScreen = false;
 
 function togglePlay() {
     // if (video.paused) {
@@ -44,18 +45,49 @@ function scrub(e) {
 }
 
 function toggleFullScreen() {
-    if (player.requestFullScreen) {
-        player.requestFullScreen();
-    }
-    else if (player.msRequestFullScreen) {
-        player.msRequestFullScreen();
-    }
-    else if (player.mozRequestFullScreen) {
-        player.mozRequestFullScreen();
+    if (!inFullScreen) {
+        makeFullScreen();
     }
     else {
-        player.webkitRequestFullScreen();
+        makeNotFullscreen();
     }
+}
+
+function makeFullScreen() {
+    if (player.requestFullscreen) {
+        player.requestFullscreen();
+    }
+    else if (player.msRequestFullscreen) {
+        player.msRequestFullscreen();
+    }
+    else if (player.mozRequestFullscreen) {
+        player.mozRequestFullscreen();
+    }
+    else if (player.webkitExitFullscreen) {
+        player.webkitExitFullscreen();
+    }
+    else if (player.webkitRequestFullscreen) {
+        player.webkitRequestFullscreen();
+    }
+    inFullScreen = true;
+    return;
+}
+
+function makeNotFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    }
+    else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+    else if (document.mozCancelFullscreen) {
+        document.mozCancelFullscreen();
+    }
+    else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    }
+    inFullScreen = false;
+    return;
 }
 
 video.addEventListener('click', togglePlay);
